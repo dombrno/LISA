@@ -1,0 +1,75 @@
+%FILENAME: README_lisadiag
+%VERSION :30-Sep-95
+
+This file contains information useful for running the
+program lisadiag.f which is provided together with the 
+article 
+
+           The Local Impurity Self Consistent Approximation (LISA)
+                   to Strongly Correlated Fermion Systems
+                   and the Limit of Infinite Dimensions
+
+                                   by
+
+          A. Georges, G. Kotliar, W. Krauth, M. Rozenberg
+
+        to be published in: Reviews of Modern Physics (1996)
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+To run the lisadiag program you have to retrieve by ftp (cf
+Appendix of GKKR) the following files 
+
+1)  lisadiag.f        -  diagonalisation program at finite temperature.
+2)  lisadiag.dat      -  supplementary file, sets the 
+                         dimension of the program parameters
+                         (the file is directly read into lisadiag.f 
+                         during compilation)
+3)  lisadiag.input    -  sample input file for `physical' parameters 
+                         (temperature, Interaction, etc)
+4)  lisadiag.andpar   -  sample file for initial values of the Anderson
+                         model parameters 
+
+The program lisadiag.f will produce the following files
+
+5)  files zz.....     - these files are of no interest to you: they
+                        contain the eigenvectors (file zz...evfile)
+                        and matrixelements (file zz...dupfile) of
+                        the various sectors. This is done in order to 
+                        simplify the treatment of large Hilbert spaces.
+
+6)  lisadiag.green   -  Thermodynamic Green's function G(i omega_n)
+7)  lisadiag.diff    -  Bath Green's functions G_0(i omega_n) and 
+                        G_0^And (i omega_n) are output: this allows
+                        calculation of the difference between the two 
+                        functions.
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+--To run the program, compile 
+
+f77 -O lisadiag.f -o lisadiag.out
+
+--remove the following two files 
+
+rm lisadiag.green lisadiag.diff
+
+--and execute the program.
+
+lisadiag.out >lisadiag.output
+
+--after the run, the file lisadiag.andpar will contain the updated
+  values of the Anderson-model parameters.
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Comments: the program contains a certain number of public domain 
+subroutines (from the slatec library), which perform the computation of
+the eigensystem. These routines are at the end of the program file.
+You may want to choose different routines, precompile them etc.
+
+Likewise, we only treat the case of the paramagnetic phase in Hubbard
+model with a semi-circular density of states. The exact diagonalization
+approach has been applied in many different instances, cf GKKR.
+
+

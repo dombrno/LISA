@@ -1,0 +1,30 @@
+C========+=========+=========+=========+=========+=========+=========+=$
+C PROGRAM: lisadiag.dat
+C TYPE   : parameter file (read in by 'include')
+C VERSION: 07-Mar-2003
+C========+=========+=========+=========+=========+=========+=========+=$
+      implicit double precision (a-h,o-z)
+      logical Half,Locspin,Taucalc
+      parameter(nmpara=100)
+      parameter (L=64,Iwmax=2**6)
+C========+=========+=========+=========+=========+=========+=========+=$
+C one of the following lines should be without comment 
+C========+=========+=========+=========+=========+=========+=========+=$
+C     parameter (Ns=2,Nsmax=6)
+C     parameter (Ns=3,Nsmax=20)
+      parameter (Ns=4,Nsmax=36)
+C     parameter (Ns=5,Nsmax=100)
+C     parameter (Ns=6,Nsmax=400)
+C========+=========+=========+=========+=========+=========+=========+=$
+      parameter(nitmax=1000,Ip=2*Ns)
+      complex*16 Gw(0:Iwmax),G0w(0:Iwmax),G0wand(0:Iwmax),
+     %   Chiw(0:2000),Xi
+      dimension Eval(Nsmax,0:Ns,0:Ns),Nstates(0:Ns,0:Ns),
+     %   Ivec(Ip,Nsmax,0:Ns,0:Ns),
+     %   Gt(L),G0t(L),V(Ns),Chis(L),Epsk(Ns) 
+      common/global/Zero,One,Two,
+     %   Beta,Beta1,U,Xmu,Gw,G0w,Gt,G0t,G0wand,
+     %   V,epsk,Cutoff,Epsilon,Pi,Xi,
+     %   Ddens,Iss,Half,Locspin,Taucalc,Chis,
+     %   Chiw,Eval,Xnorm,Nstates,Ivec,ic,jc,jcut
+

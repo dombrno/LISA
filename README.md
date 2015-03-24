@@ -1,2 +1,2 @@
 # LISA
-Lisa implemetation (1996)
+Lisa implementation (1996)

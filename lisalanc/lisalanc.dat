@@ -1,0 +1,36 @@
+c========+=========+=========+=========+=========+=========+=========+=$
+C PROGRAM: lisalanc.dat
+C TYPE   : parameter file (read in by 'include')
+C VERSION: 25/08/93
+C========+=========+=========+=========+=========+=========+=========+=$
+      implicit double precision (a-h,o-z)
+      logical Half
+      parameter(Nmpara=100)
+      parameter (Iwmax=2**6)
+      parameter(Nl=100,Tiny=1.e-13)
+C========+=========+=========+=========+=========+=========+=========+=$
+C one of the following lines should be without comment 
+C========+=========+=========+=========+=========+=========+=========+=$
+c     parameter (Ns=2,Nslmax=6,Ncontx=17)
+c     parameter (Ns=3,Nslmax=20,Ncontx=17)
+      parameter (Ns=4,Nslmax=70,Ncontx=17)
+c     parameter (Ns=5,Nslmax=252,Ncontx=26)
+c     parameter (Ns=6,Nslmax=924,Ncontx=37)
+c     parameter (Ns=7,Nslmax=3432,Ncontx=50)
+c     parameter (Ns=8,Nslmax=12870,Ncontx=66)
+c     parameter (Ns=9,Nslmax=48620,Ncontx=17)
+c     parameter (Ns=10,Nslmax=184756,Ncontx=126)
+c     parameter (Ns=11,Nslmax=705432,Ncontx=126)
+c     parameter (Ns=12,Nslmax=2704156,Ncontx=126)
+C========+=========+=========+=========+=========+=========+=========+=$
+      parameter(Nitmax=1000,Ip=2*Ns)
+      complex*16 Gw(0:Iwmax),G0w(0:Iwmax),G0wand(0:Iwmax),Xi
+      dimension Nstates(0:Ns,0:Ns),V(Ns),
+     %   Epsk(Ns),Hstate(Nslmax,Ncontx),Nconnect(Nslmax,Ncontx),
+     %   Nhstate(Nslmax),Ivec(ip,Nslmax),Nstock(Nslmax),Ninv(0:2**Ip-1)
+      common/global/
+     %   Zero,One,Two,Hstate,Xnorm, 
+     %   Beta,U,Xmu,V,Epsk,Pi,Ddens,
+     %   Gw,G0w,G0wand,Xi,
+     %   Nhstate,Nconnect,Nstates,Nstock,Ninv,Ivec,
+     %   Half

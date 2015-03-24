@@ -1,0 +1,20 @@
+C========+=========+=========+=========+=========+=========+=========+=$
+C FILENAME: lisaqmc.dat
+C COMMENTS: file to be input into lisaqmc.f and lisaself.f.
+C           For the sake of simplicity, the programs are
+C           both in double precision.
+C VERSION : 30-Sep-95
+C========+=========+=========+=========+=========+=========+=========+=$
+       implicit double precision (a-h,o-z)
+       parameter (L=8,Iwmax=2**13)
+       logical Paramagnet
+       complex*16 Greenwup(0:Iwmax), Green0wup(0:Iwmax),
+     $ Greenwdo(0:Iwmax), Green0wdo(0:Iwmax)
+       dimension Is(L), Greenup(L,L), Greendo(L,L), Gnewup(L,L)
+       dimension Gnewdo(L,L),Green0up(L,L),Green0do(L,L)
+       dimension Greentup(L),Greentdo(L),Green0tup(L),Green0tdo(L)
+       common/global/Zero,One,Two,Three,Beta,Is,
+     $ Greenup,Greendo,Gnewup,Gnewdo,
+     $ Uo,Xlambda, Green0up,Green0do,H,Xmu,Greenwup,Greenwdo,
+     $ Green0wup,Green0wdo,Greentup,Greentdo,
+     $ Green0tup,Green0tdo,Ic,Paramagnet,Idum

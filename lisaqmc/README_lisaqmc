@@ -1,0 +1,75 @@
+%FILENAME: README_lisaqmc 
+%VERSION : 24-Oct-95
+
+This file contains information useful for running the
+program lisaqmc.f which is provided together with the 
+article 
+
+           The Local Impurity Self Consistent Approximation (LISA)
+                   to Strongly Correlated Fermion Systems
+                   and the Limit of Infinite Dimensions
+
+                                   by
+
+          A. Georges, G. Kotliar, W. Krauth, M. Rozenberg
+
+        to be published in: Reviews of Modern Physics (1996)
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+To run the lisaqmc program you have to retrieve by ftp (cf
+Appendix of GKKR) the following files 
+
+1)  lisaqmc.f        -  Hirsch-Fye algorithm
+2)  lisaqmc.dat      -  supplementary file, sets the 
+                        dimension of the program parameters
+                        (the file is directly read into lisaqmc.f 
+                        during compilation)
+3)  lisaqmc.input    -  sample input file for `physical' parameters 
+                        (temperature, Interaction, magnetic field,
+                        number of sweeps, etc)
+4)  lisaqmc.init     -  sample init file, containing an initial
+                        choice of G_0(tau), and of the Ising variables
+                        Is(tau), as well as an initial seed of the 
+                        random  number generator
+
+The program lisaqmc.f will produce the following files
+
+5)  lisaqmc.result   -  result for the Green's function G(tau)
+6)  lisaqmc.end      -  same as lisaqmc.init, but with the final values
+                        of the Ising variables. This way it is possible
+                        to run the program several times one after the
+                        other, with 'good' choices for the Ising spins.
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+--To run the program, compile 
+
+f77 -O lisaqmc.f -o lisaqmc.out
+
+--remove the following two files 
+
+rm lisaqmc.result lisaqmc.end
+
+--and execute the program.
+
+lisaqmc.out >lisaqmc.output
+
+--if you want to run it again, change lisaqmc.end into lisaqmc.init,
+--(you may want to keep a copy of the lisaqmc.init and lisaqmc.result)
+--remove again the two files, and execute:
+
+mv lisaqmc.end lisaqmc.init     
+rm lisaqmc.result lisaqmc.end
+lisaqmc.out >> lisaqmc.output
+
+--it is very easy to set up a little shell-script to make
+  things proceed automatically. A sample c-shell procedure implementing
+  the full self-consistency loop can be found in the file
+  lisaqmcself.script
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+NB: Consult the file README_lisaself    to find out about the 
+    program implementing the self-consistency condition.
+

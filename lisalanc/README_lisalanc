@@ -1,0 +1,70 @@
+%FILENAME: README_lisalanc
+%VERSION : 13-May-96
+
+This file contains information useful for running the
+program lisalanc.f which is provided together with the 
+article 
+
+           The Local Impurity Self Consistent Approximation (LISA)
+                   to Strongly Correlated Fermion Systems
+                   and the Limit of Infinite Dimensions
+
+                                   by
+
+          A. Georges, G. Kotliar, W. Krauth, M. Rozenberg
+
+        to be published in: Reviews of Modern Physics (1996)
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+To run the lisalanc program you have to retrieve by ftp (cf
+Appendix of GKKR) the following files 
+
+1)  lisalanc.f        -  diagonalisation program at zero temperature.
+2)  lisalanc.dat      -  supplementary file, sets the 
+                         dimension of the program parameters
+                         (the file is directly read into lisalanc.f 
+                         during compilation)
+3)  lisalanc.input    -  sample input file for `physical' parameters 
+                         (temperature, Interaction, etc)
+4)  lisalanc.andpar   -  sample file for initial values of the Anderson
+                         model parameters 
+
+The program lisalanc.f will produce the following files
+
+6)  lisalanc.green   -  Thermodynamic Green's function G(i omega_n)
+7)  lisalanc.diff    -  Bath Green's functions G_0(i omega_n) and 
+                        G_0^And (i omega_n) are output: this allows
+                        calculation of the difference between the two 
+                        functions.
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+--To run the program, compile 
+
+f77 -O lisalanc.f -o lisalanc.out
+
+--remove the following two files 
+
+rm lisalanc.green lisalanc.diff
+
+--and execute the program.
+
+lisalanc.out >lisalanc.output
+
+--after the run, the file lisalanc.andpar will contain the updated
+  values of the Anderson-model parameters.
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Comments: the program contains a public domain subroutine tql2.f
+(from the SLATEC library). This  routine was minimally changed (from
+single precision to double precision). It computes the eigenvectors
+and eigenvalues of a tridiagonal symmetric matrix (cf the header of the
+subroutine to find out how to access SLATEC routines via WWW and ftp).
+
+In this routine, the focus is put on transparency of the code. We hope
+that the Lanczos procedure is transparent to the non-expert. The 
+program has to be modified  for the calculation of ordered states, 
+real-time Green's functions etc.
+

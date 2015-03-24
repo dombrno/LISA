@@ -1,0 +1,25 @@
+#!/bin/csh
+# sample c-shell script to do one iteration of the 
+# selfconsistency loop. The file 'standardfile' accumulates
+# all the trivial outputs, the files 'initsfile' and 
+# 'resultsfile' accumulate the results of the calculation.
+#
+# keep track of date and machine:
+echo `date` `hostname` >> standardfile
+#
+# get rid of files that will be created
+#
+rm -f  lisaqmc.result lisaqmc.end
+#
+# run the Hirsch-Fye algorithm
+#
+lisaqmc.out>>1.standard
+#
+# accumulate  results
+echo `date` `hostname`>>initsfile
+cat lisaqmc.init>>initsfile
+echo `date` `hostname`>>resultsfile
+cat lisaqmc.result >> resultsfile
+#
+# run the self consistency
+lisaself.out >> standardfile
