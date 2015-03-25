@@ -53,15 +53,15 @@ rm lisaqmc.result lisaqmc.end
 
 --and execute the program.
 
-lisaqmc.out >lisaqmc.output
+./lisaqmc.out >lisaqmc.output
 
 --if you want to run it again, change lisaqmc.end into lisaqmc.init,
 --(you may want to keep a copy of the lisaqmc.init and lisaqmc.result)
 --remove again the two files, and execute:
 
 mv lisaqmc.end lisaqmc.init     
-rm lisaqmc.result lisaqmc.end
-lisaqmc.out >> lisaqmc.output
+rm lisaqmc.result
+./lisaqmc.out > lisaqmc.output
 
 --it is very easy to set up a little shell-script to make
   things proceed automatically. A sample c-shell procedure implementing

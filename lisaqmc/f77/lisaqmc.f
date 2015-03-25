@@ -43,7 +43,7 @@ C========+=========+=========+=========+=========+=========+=========+=$
       One=1
       Two=2
       stochastic=.true.
-      if (L.le.18) stochastic=.false.
+cc      if (L.le.18) stochastic=.false.
       open (unit=1,file='lisaqmc.input',form='formatted',status='old')
 cc     
 cc    write header onto standard output 
@@ -59,6 +59,7 @@ c======================================================================
       read (1,*)Beta,U,xmut,H
 cc
 cc    cosh(Xlambda)=exp(deltau*U/2)     cf. eq. (\ref{hirschdecoup})
+cc    cf. eq. 119
 cc
       deltau=Beta/real(L)
       dummy=exp(deltau*U/Two)
@@ -76,6 +77,7 @@ cc
       print*,' begin initi paa', paramagnet
       call initial 
       print*,' end init'
+      print*, ' green0up'
        do i=1,L
              write(*,'(8f10.5)')(green0up(i,j),j=1,8)
        end do
@@ -100,6 +102,7 @@ c***********************************************************************
 cc
 cc    SIMULATION BY MONTE CARLO   (stochastic.eq.true)
 cc
+      print*, ' stochastic', stochastic
       if (stochastic) then 
          nfastup=100
          do 1000 iii=1,1000000000
@@ -109,6 +112,10 @@ cc       until checking with subroutine 'update' (eq.
 cc       whether precision hasn't 
 cc       deteriorated. If that is the case, we make nfastup smaller, 
 cc       otherwise bigger.
+cc       The MC algorithm is driven by a heat bath algorithm.
+cc       Acceptance is decided according to Eqs. 134, 
+cc       with the ratios of determinants given by eq.131
+cc       The fast update algorithm relates to eq. 130.
 cc
          do 2000 kkk=1,nfastup
          iter=iter+1
@@ -120,7 +127,7 @@ c           try flipping spin k
 c
             isignnew=abs(detrat(k))/detrat(k)
             if (isignnew.ne.isign) then
-               print*,'signchange',isignnew
+cc                print*,'signchange',isignnew
                isign=isignnew
             end if
             dummy=abs(detrat(k))
@@ -133,7 +140,13 @@ cc
             end if 
 1900        continue
 cc
-cc          end of sweep: calculation of green's function
+cc          end of sweep: The green's function,
+cc          which are functions of imaginary time tau,
+cc          are "averaged", in order to reduce the statistical
+cc          noise, by forcing the translation invariance in imaginary
+cc          time of the physical Green's functions.
+cc          Cf remark, last paragraph of section VI A 1 c,
+cc          left column of p38
 cc
             iitime=iitime+1
             do 192 idel=-L+1,L-1
@@ -150,8 +163,13 @@ cc
 192         continue
             do 191 i=1,L
                dummy=L
+cc            dsum is used to track the number of doubly
+cc            occupied sites. An average over tau is done, but 
+cc            this point is not discussed in the review.
                dsum=dsum+greenup(i,i)*greendo(i,i)/dummy
 191         continue
+cc         dosum/upsum are the down and up density
+cc         Needs tgo be justified...
             dosum=dosum+greenm2(0)
             upsum=upsum+greenm(0)
             do 818 i=0,L-1
@@ -243,7 +261,7 @@ cc
 	    partition=partition+det
             isignnew=abs(detrat(k))/detrat(k)
             if (isignnew.ne.isign) then
-               print*,'signchange',isignnew
+cc               print*,'signchange',isignnew
                isign=isignnew
             end if
             call record(k)
@@ -317,11 +335,11 @@ c====================================================================
       call wheader(15)
       if (Paramagnet) then
          do 616 i=1,L
-            write(15,'(f20.10)')Green0up(i,1),Green0do(i,1)
+            write(15,'(f20.10)')Green0up(i,1)
 616      continue
       else
          do 618 i=1,L
-            write(15,'(f20.10)')Green0up(i,1)
+            write(15,'(f20.10,f20.10)')Green0up(i,1),Green0do(i,1)
 618      continue
       end if
       do 617 i=1,L
@@ -336,7 +354,7 @@ C========+=========+=========+=========+=========+=========+=========+=$
 C     PROGRAM: detrat.f  
 C     TYPE   : function
 C     PURPOSE: calculate the ratio of the new and
-C              old determinants (cf. eq. (\ref{detrat})
+C              old determinants (cf. eq. (\ref{detrat}) i.e. eq. 131
 C     I/O    : 
 C     VERSION: 30-Sep-95
 C     COMMENT:
@@ -398,8 +416,8 @@ cc
       read(14,*)Idum
 cc
 cc    calculation of Green's function
-cc    update puts results in array Greenu, which is then
-cc    transcribed into array Green (use translation invariance).
+cc    update puts results in array Gnewup, Gnewdo, which is then
+cc    transcribed into array Greenup, Greendo (use translation invariance).
 cc
       dummy=L
       deltau=Beta/dummy
@@ -439,8 +457,8 @@ C              or else replace it!
 C========+=========+=========+=========+=========+=========+=========+=$
       real function ranw(idum)
       Parameter (Mbig=2**30-2, Xinvers=1./Mbig)
-      data ibit/ 1/
       Integer IX(55)
+      data ibit/ 1/
       save
       if (ibit.ne.0) then
          ibit=0
@@ -492,6 +510,7 @@ C========+=========+=========+=========+=========+=========+=========+=$
         include 'lisaqmc.dat'
 cc
 cc    update Green's function (implementation of  eq. (\ref{fastupdate}))
+cd    i.e. eq. 130.
 cc
         del=-Two*Xlambda*Is(k)
         do 1 i=1,L
@@ -522,7 +541,7 @@ C     TYPE   : subroutine
 C     PURPOSE: calculate the Green's function 
 C              for a given configuration of spins 
 C              (in vector Is) from the Green's function
-C              for spins set equal to zero  (eq. (\ref{inversion}))
+C              for spins set equal to zero  (eq. (\ref{inversion})) i.e. eq. 128, 122
 C     I/O    : 
 C     VERSION: 30-Sep-95
 C     COMMENT: can be used to initialize run
@@ -534,6 +553,7 @@ C========+=========+=========+=========+=========+=========+=========+=$
       dimension a(L,L),b(L,L),ainv(L,L),binv(L,L)
 cc
 cc    calculate the matrix a=1-(g-1)(exp(v')-1)
+cc    Cf eq. 128, 122
 cc
       do 2 i=1,L
          do 3 j=1,L

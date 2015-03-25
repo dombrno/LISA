@@ -23,10 +23,10 @@ C          IBM RS6000 stations.
 C
 C TYPE   : main 
 C PURPOSE: second main program for the Hubbard program. The 
-C          function G(tau) of program kondo.f is fourier-
+C          function G(tau) of program lisaqmc.f is fourier-
 C          transformed
 C          to yield G(omega), and a new function GO(omega) is
-C          produced. New input G0(tau) for program kondo.f 
+C          produced. New input G0(tau) for program lisaqmc.f 
 C          by inverse fourier transform.
 C I/O    : parameters in lisaqmc.dat 
 C VERSION: 30-Sep-95
