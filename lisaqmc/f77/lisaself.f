@@ -64,9 +64,9 @@ cc
 cc    open parameter file
 cc
       open (unit=1,file='lisaqmc.input',form='formatted',status='old')
-C========+=========+=========+=========+=========+=========+=========+=$
+C========+=========+=========+=========+=========+=========+=$
 c     initial set-up
-C========+=========+=========+=========+=========+=========+=========+=$
+C========+=========+=========+=========+=========+=========+=$
       read (1,*)
       read (1,*)
       read (1,*)
@@ -267,7 +267,7 @@ C========+=========+=========+=========+=========+=========+=========+=$
        write(6,'(a20)')'         Summary - LISASELF'
        write(6,'(a60)')'========================================'
        end
-C========+=========+=========+=========+=========+=========+=========+=$
+C========+=========+=========+=========+=========+=========+=$
 C       PROGRAM: nfourier
 C       TYPE   : subroutine
 C       PURPOSE: fourier-transform the natural-spline interpolation
@@ -279,7 +279,7 @@ C                29-Nov-95 removal of minimal bug concerning
 C                          dimension of rindata
 C       COMMENT: cf J. Stoer R. Bulirsch, Introduction to numerical
 C                analysis (Springer, New York, 1980)
-C========+=========+=========+=========+=========+=========+=========+=$
+C========+=========+=========+=========+=========+=========+=$
        subroutine nfourier(rindata,coutdata)
        include 'lisaqmc.dat'
        dimension rindata(L)
