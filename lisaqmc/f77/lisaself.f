@@ -93,7 +93,8 @@ cc
         call rheader(14)
 cc
 cc     read in and change sign of function green(tau)
-cc     the following is in fact Green0t (which is not needed)
+cc     the following is in fact Green0t (which wil not be used
+cc     in any other from than through its FT in the following)
 cc
        do 98 i=1,L
           if (extended) then
@@ -126,8 +127,11 @@ cc
 1789      continue
        end if
        call nfourier(vdummyup,Green0wup)
-
        if (extended) call nfourier(vdummydo,Green0wdo) 
+
+cc    Now read the output of lisaqmc, which is the local
+cc    Green's function obtained from the Weiss function
+cc    which was just read above, via the impurity solver.
        do i=1,L 
           if (extended) then
              read(17,*)dummy1, dummy2
@@ -158,17 +162,23 @@ cc
 cc     update Green0wup, see notes 15/11/91, 22/3/92
 cc
        do 818 i=0,Iwmax
+cc     omega is i-th Matsubara frequency
           omega=(Two*i+One)*xpi/Beta*xi
-
+cc     determine self-energy at this matsubara frequency
           dumcup=One/Greenwup(i)-One/Green0wup(i) 
+cc     and compute denominator integrand for determination of
+cc     local Green's function
           arguup=omega+dumcup+xmut+h
           fup=One
+cc       Not sure about this condition though. Check Eq 20.
           if (imag(arguup).le.0) fup=-One
 cc
 cc    Gaussian
 cc
           if (ic.eq.0) then
              arguup=arguup*fup
+cc    wfun is the exponentially  rescaled error function w
+cc    Cf eqs 220-222 and 19-20
              gdumup=-fup*xi*sqrt(xpi)*wfun(arguup)
 cc
 cc    Square
@@ -178,6 +188,9 @@ cc
               gdumup=log(arguup)/Two
 cc
 cc     semi circular
+cc    Eqs 7 + 21-22 lead to
+cc    eqs 220-222 
+cc    and this is just preparatory work in this context.
 cc
           else if (ic.eq.2) then
              gdumup=-Two/Greenwup(i)
@@ -233,10 +246,12 @@ cc        now use self-consistency condition
 cc        choose one of the following two lines
 cc
 c         Green0wup(i)=(Green0wup(i)+One/(-dumcup+One/gdumup))/Two
+cc       Cf eq. 221-222, and eq. 23 in the specific case of the semicircular DOS.
           Green0wup(i)=One/(-dumcup+One/gdumup)
           if (i.lt.10)   print*,Green0wup(i),i,'up'
 
           if (extended) then
+cc       Cf eq. 223
 c            Green0wdo(i)=(Green0wdo(i)+One/(-dumcdo+One/gdumdo))/Two
              Green0wdo(i)=One/(-dumcdo+One/gdumdo)
              if (i.lt.10)print*,Green0wdo(i),i,'do'
